@@ -4,7 +4,6 @@ function ()
         
         -- Determining melee range
         if WeakAuras.CheckRange('target', 10, "<=") then
-            print('meelee')
             c = 0.1
         end
         
@@ -45,11 +44,11 @@ function ()
             if aura_env.helpers.AuraIsDebug() then
                 print('DEBUG: Tanking')
             end
-            return FormatOutput('G', 'T')
+            return FormatOutput('T', FormatThreat(aura_env.state.threatvalue))
         end
         
-        local isTank, _, _, _, threat = UnitDetailedThreatSituation('targettarget', 'target')
-        if isTank then
+        local is_tank, _, _, _, threat = UnitDetailedThreatSituation('targettarget', 'target')
+        if is_tank then
             if aura_env.helpers.AuraIsDebug() then
                 print('DEBUG: Determining threat between "target" and "targettarget"')
             end
@@ -59,8 +58,8 @@ function ()
         else
             if IsInGroup() or IsInRaid() then
                 for member in WA_IterateGroupMembers() do
-                    local isTank, _, _, _, threat = UnitDetailedThreatSituation(member, 'target')
-                    if isTank then
+                    local is_tank, _, _, _, threat = UnitDetailedThreatSituation(member, 'target')
+                    if is_tank then
                         if aura_env.helpers.AuraIsDebug() then
                             print(string.format('DEBUG: Determining threat between "target" and "%s"', member))
                         end
